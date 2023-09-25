@@ -1,0 +1,11 @@
+
+.pokdex-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+}
+
+#heading-pokemon{
+     margin: 0 auto;
+     letter-spacing: 5px;
+}
