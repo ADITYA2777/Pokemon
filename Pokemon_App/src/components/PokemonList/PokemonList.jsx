@@ -13,11 +13,12 @@ function PokemonList() {
     const [nextUrl, setnextUrl] = useState('');
     const [prevtUrl, setprevUrl] = useState('');
   async function downloadPokemon() {
+    //  setIsLoading(true)
       const response = await axios.get(Pokemon_url); // this download url api of pokemon 
       const pokemonResults = response.data.results; // we get array of pokemon from results
      
-      setnextUrl(response.data.next);
-      setprevUrl(response.data.prev);
+      setnextUrl(response?.data?.next);
+      setprevUrl(response?.data?.previous);
       //iterating  over array of pokemon ,using there url ,to create  an array of  promises
       //that will download thoses 20 pokemon
       const pokemonResultsPromise =
@@ -32,10 +33,10 @@ function PokemonList() {
           return {
               id: pokemon.id,
             name: pokemon.name,
-            image: (pokemon.sprites.other)
-              ? pokemon.sprites.other.dream_world.front_default
-                  : pokemon.sprites.front_shiny,
-            types:pokemon.types
+            image:  IMG_URl  || (pokemon?.sprites?.other)
+              ? pokemon?.sprites?.other?.dream_world?.front_default
+                  : pokemon?.sprites?.front_shiny,
+            types:pokemon?.types
           };
       })
       console.log(res);
@@ -45,18 +46,32 @@ function PokemonList() {
 
   useEffect(() => {
     downloadPokemon();
-  }, []);
+  }, [Pokemon_url]);
 
     return (
       <div className="pokemon-list-wrapped">
-       <div className="pokemon-wrraped">
-                {IsLoading ? " Loading...." : pokeList.map((c) => <Pokemon name={c.name} image={c.image} key={c.id} />)}
-            </div>
+        <div className="pokemon-wrraped">
+          {IsLoading
+            ? " Loading...."
+            : pokeList.map((c) => (
+                <Pokemon name={c.name} image={c.image} key={c.id} id={c.id} />
+              ))}
+        </div>
 
-            <div className="control">
-                <button>Prev</button>
-                <button>Next</button>
-            </div>
+        <div className="control">
+          <button
+            disabled={prevtUrl == null}
+            onClick={()=> setpokemon_url(prevtUrl)}
+          >
+            Prev
+          </button>
+          <button
+            disabled={nextUrl == null}
+            onClick={()=> setpokemon_url(nextUrl)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     );
 }

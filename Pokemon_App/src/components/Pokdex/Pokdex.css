@@ -2,7 +2,7 @@
 .pokdex-wrapper{
     display: flex;
     flex-direction: column;
-    width: 1000px;
+    /* width: 1000px; */
 }
 
 #heading-pokemon{
